@@ -1,6 +1,6 @@
 package com.hamstercoders.netty.dub.server;
 
-import com.hamstercoders.netty.dub.handlers.HttpHelloServerHandler;
+import com.hamstercoders.netty.dub.handlers.*;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -9,7 +9,14 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.http.HttpRequestDecoder;
+import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.codec.http.HttpServerCodec;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created on 19-Jul-15.
@@ -33,13 +40,8 @@ public class Server {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
-                    .childHandler(new ChannelInitializer<SocketChannel>() {
-                        @Override
-                        protected void initChannel(SocketChannel socketChannel) throws Exception {
-                            socketChannel.pipeline().addLast(new HttpServerCodec());
-                            socketChannel.pipeline().addLast(new HttpHelloServerHandler());
-                        }
-                    })
+                    .handler(new LoggingHandler(LogLevel.INFO))
+                    .childHandler(new ServerChannelInitializer())
                     .option(ChannelOption.SO_BACKLOG, 1024)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
 
