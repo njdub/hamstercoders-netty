@@ -16,5 +16,8 @@ public interface ServerInfo {
 
     public void addRequest(RequestInfo request);
 
-    public Map<String, List<RequestInfo>> getRequests();
+    public void incrementActiveConnection();
+
+    public void decrementActiveConnections();
+
 }

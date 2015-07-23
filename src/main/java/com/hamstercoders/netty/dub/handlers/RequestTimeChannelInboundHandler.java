@@ -6,6 +6,8 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
+import java.util.Date;
+
 /**
  * Created on 19-Jul-15.
  *
@@ -18,6 +20,7 @@ public class RequestTimeChannelInboundHandler extends ChannelInboundHandlerAdapt
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ctx.channel().attr(ServerInfo.REQUEST_INFO).get().setStartTime(System.nanoTime());
+        ctx.channel().attr(ServerInfo.REQUEST_INFO).get().setRequestDate(new Date());
         super.channelRead(ctx, msg);
     }
 }

@@ -3,7 +3,6 @@ package com.hamstercoders.netty.dub.handlers.web;
 import com.hamstercoders.netty.dub.dao.HelloDao;
 import com.hamstercoders.netty.dub.server.core.HttpHandler;
 import com.hamstercoders.netty.dub.server.core.SimpleHttpChannelServerHandler;
-import com.hamstercoders.netty.dub.server.core.di.Component;
 import com.hamstercoders.netty.dub.server.core.di.Inject;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
@@ -29,6 +28,8 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 @HttpHandler("/hello")
 public class HttpHelloServerHandler implements SimpleHttpChannelServerHandler {
 
+    private static final int DELAY = 10;
+
     @Inject
     private HelloDao dao;
 
@@ -37,8 +38,7 @@ public class HttpHelloServerHandler implements SimpleHttpChannelServerHandler {
         if (HttpHeaders.is100ContinueExpected(req)) {
             ctx.writeAndFlush(new DefaultFullHttpResponse(HTTP_1_1, CONTINUE));
         }
-        ctx.executor().schedule(new WriteHelloTask(ctx, req), 3, TimeUnit.SECONDS);//Todo: Change to 10sec delay
-        //Thread.sleep(10000);    //Blocking thread here TODO: Try to find better solution
+        ctx.executor().schedule(new WriteHelloTask(ctx, req), DELAY, TimeUnit.SECONDS);
     }
 
     private class WriteHelloTask implements Runnable {
@@ -67,10 +67,5 @@ public class HttpHelloServerHandler implements SimpleHttpChannelServerHandler {
             }
             ctx.flush();
         }
-    }
-
-    public static void main(String[] args) {
-        Class<?> clazz = HttpHelloServerHandler.class;
-        System.out.println(clazz.isAnnotationPresent(Component.class));
     }
 }

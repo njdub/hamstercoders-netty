@@ -1,7 +1,7 @@
 package com.hamstercoders.netty.dub.server;
 
 import com.hamstercoders.netty.dub.dao.HelloDao;
-import com.hamstercoders.netty.dub.dao.ServerStatusDao;
+import com.hamstercoders.netty.dub.dao.ServerStatus;
 import com.hamstercoders.netty.dub.dao.SimpleHelloDao;
 import com.hamstercoders.netty.dub.server.core.di.bean.Bean;
 import com.hamstercoders.netty.dub.server.core.di.Configuration;
@@ -25,7 +25,7 @@ public class AppConfiguration {
     }
 
     @Bean
-    ServerStatusDao defaultServerStatusDao() {
+    ServerStatus defaultServerStatusDao() {
         return serverDao;
     }
 

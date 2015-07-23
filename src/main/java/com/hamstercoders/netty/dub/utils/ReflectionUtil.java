@@ -92,11 +92,6 @@ public class ReflectionUtil {
         return false;
     }
 
-
-    public static void main(String[] args) {
-        System.out.println(hasAnnotation(ReflectionUtil.class, Component.class));
-    }
-
     private static File[] filesIn(File directory) {
         File[] files = directory.listFiles();
         if (files == null) {

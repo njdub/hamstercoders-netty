@@ -1,5 +1,7 @@
 package com.hamstercoders.netty.dub.entities;
 
+import java.util.Date;
+
 /**
  * Created on 21-Jul-15.
  *
@@ -12,18 +14,11 @@ public class RequestInfo {
     private long endTime;
     private long sentBytes;
     private long receivedBytes;
+    private Date requestDate;
 
     public RequestInfo() {
     }
 
-    public RequestInfo(String ip, String uri, long startTime, long endTime, long sentBytes, long receivedBytes) {
-        this.ip = ip;
-        this.uri = uri;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.sentBytes = sentBytes;
-        this.receivedBytes = receivedBytes;
-    }
 
     public String getIp() {
         return ip;
@@ -73,6 +68,14 @@ public class RequestInfo {
         this.receivedBytes = receivedBytes;
     }
 
+    public Date getRequestDate() {
+        return requestDate;
+    }
+
+    public void setRequestDate(Date requestDate) {
+        this.requestDate = requestDate;
+    }
+
     @Override
     public String toString() {
         return "RequestInfo{" +
@@ -82,6 +85,7 @@ public class RequestInfo {
                 ", endTime=" + endTime +
                 ", sentBytes=" + sentBytes +
                 ", receivedBytes=" + receivedBytes +
+                ", requestDate=" + requestDate +
                 '}';
     }
 }
