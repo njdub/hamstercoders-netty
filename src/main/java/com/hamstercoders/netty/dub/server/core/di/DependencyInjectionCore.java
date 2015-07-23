@@ -100,7 +100,7 @@ public class DependencyInjectionCore implements ComponentSource {
     private BeanDefinition findBeenByClass(Class<?> clazz) {
         BeanDefinition definitionToReturn = beans.get(clazz.getName());
         if (definitionToReturn != null) {
-            return definitionToReturn;          //TODO Resolve more than one bean to inject in this case
+            return definitionToReturn;          //TODO Resolve more than one bean to inject bug in this case
         } else {
             for (BeanDefinition definition : beans.values()) {
                 if (Arrays.asList(definition.getClazz().getInterfaces()).contains(clazz)) {

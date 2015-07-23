@@ -5,6 +5,7 @@ import com.hamstercoders.netty.dub.dao.SimpleHelloDao;
 import com.hamstercoders.netty.dub.server.core.di.bean.Bean;
 import com.hamstercoders.netty.dub.server.core.di.bean.Configuration;
 import com.hamstercoders.netty.dub.dao.ServerInfoRepository;
+import com.hamstercoders.netty.dub.views.ServerStatusPage;
 import io.netty.channel.DefaultMessageSizeEstimator;
 import io.netty.channel.MessageSizeEstimator;
 
@@ -29,5 +30,10 @@ public class AppConfiguration {
     @Bean
     MessageSizeEstimator httpMessageEstimator() {
         return new DefaultMessageSizeEstimator(0);
+    }
+
+    @Bean
+    ServerStatusPage defaultViewForStatusPageGenerator() {
+        return new ServerStatusPage();
     }
 }

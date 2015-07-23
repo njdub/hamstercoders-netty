@@ -1,21 +1,12 @@
 package com.hamstercoders.netty.dub.server.core;
 
-import com.hamstercoders.netty.dub.server.core.SimpleHttpChannelServerHandler;
-import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.DefaultMessageSizeEstimator;
-import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.channel.embedded.EmbeddedChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.http.HttpRequest;
-import io.netty.handler.codec.http.HttpRequestEncoder;
 import io.netty.handler.codec.http.QueryStringDecoder;
-import io.netty.util.AttributeKey;
 import io.netty.util.ReferenceCountUtil;
 
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
 import java.util.Map;
 
 /**
@@ -23,6 +14,7 @@ import java.util.Map;
  *
  * @author Nazar Dub
  */
+@ChannelHandler.Sharable
 public class ChannelInboundMediator extends ChannelInboundHandlerAdapter {
     private final Map<String, SimpleHttpChannelServerHandler> handlers;
 
