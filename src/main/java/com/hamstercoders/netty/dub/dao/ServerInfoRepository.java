@@ -1,13 +1,13 @@
 package com.hamstercoders.netty.dub.dao;
 
 import com.hamstercoders.netty.dub.entities.RequestInfo;
+import com.hamstercoders.netty.dub.server.AppConfiguration;
 import io.netty.handler.codec.http.QueryStringDecoder;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
-import static java.util.Collections.replaceAll;
 import static java.util.Collections.synchronizedList;
 import static java.util.Collections.synchronizedMap;
 
@@ -20,7 +20,6 @@ public class ServerInfoRepository implements ServerInfo, ServerStatus {
     private final Map<String, List<RequestInfo>> requests = synchronizedMap(new HashMap<>());
 
     private final AtomicLong activeConnectionCount = new AtomicLong(0);
-
     @Override
     public Map<String, List<RequestInfo>> getRequests() {
         return requests;
@@ -29,12 +28,14 @@ public class ServerInfoRepository implements ServerInfo, ServerStatus {
     @Override
     public void addRequest(RequestInfo request) {
         if (request != null) {
-            if (!requests.containsKey(request.getIp())) {
-                requests.put(request.getIp(), synchronizedList(new ArrayList<RequestInfo>() {{
-                    add(request);
-                }}));
-            } else {
-                requests.get(request.getIp()).add(request);
+            synchronized (requests) {
+                if (!requests.containsKey(request.getIp())) {
+                    requests.put(request.getIp(), synchronizedList(new ArrayList<RequestInfo>() {{
+                        add(request);
+                    }}));
+                } else {
+                    requests.get(request.getIp()).add(request);
+                }
             }
         }
     }
@@ -86,33 +87,22 @@ public class ServerInfoRepository implements ServerInfo, ServerStatus {
     public Map<String, Map<Long, Date>> getRequestCountPerId() {
         Map<String, Map<Long, Date>> result = new HashMap<>();
         for (String ip : requests.keySet()) {
-            Long count = 0L;
+            AtomicLong count = new AtomicLong(0L);
             Date lastDate = null;
-            Iterator<RequestInfo> requestInfoIterator = requests.get(ip).iterator();
-            while (requestInfoIterator.hasNext()) {
-                RequestInfo info = requestInfoIterator.next();
-                count++;
-                if (lastDate == null) {
-                    lastDate = info.getRequestDate();
-                } else {
-                    if (info.getRequestDate().after(lastDate)) {
+            synchronized (requests) {
+                for (RequestInfo info : synchronizedList(requests.get(ip))) {
+                    count.incrementAndGet();
+                    if (lastDate == null) {
                         lastDate = info.getRequestDate();
+                    } else {
+                        if (info.getRequestDate().after(lastDate)) {
+                            lastDate = info.getRequestDate();
+                        }
                     }
                 }
             }
-//            for (RequestInfo info : requests.get(ip)) {
-//                count++;
-//                if (lastDate == null) {
-//                    lastDate = info.getRequestDate();
-//                } else {
-//                    if (info.getRequestDate().after(lastDate)) {
-//                        lastDate = info.getRequestDate();
-//                    }
-//                }
-//
-//            }
             Map<Long, Date> ipResult = new HashMap<>();
-            ipResult.put(count, lastDate);
+            ipResult.put(count.get(), lastDate);
             result.put(ip, ipResult);
         }
         return result;

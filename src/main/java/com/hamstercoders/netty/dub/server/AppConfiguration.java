@@ -1,11 +1,9 @@
 package com.hamstercoders.netty.dub.server;
 
 import com.hamstercoders.netty.dub.dao.HelloDao;
-import com.hamstercoders.netty.dub.dao.ServerStatus;
 import com.hamstercoders.netty.dub.dao.SimpleHelloDao;
 import com.hamstercoders.netty.dub.server.core.di.bean.Bean;
-import com.hamstercoders.netty.dub.server.core.di.Configuration;
-import com.hamstercoders.netty.dub.dao.ServerInfo;
+import com.hamstercoders.netty.dub.server.core.di.bean.Configuration;
 import com.hamstercoders.netty.dub.dao.ServerInfoRepository;
 import io.netty.channel.DefaultMessageSizeEstimator;
 import io.netty.channel.MessageSizeEstimator;
@@ -17,24 +15,11 @@ import io.netty.channel.MessageSizeEstimator;
  */
 @Configuration
 public class AppConfiguration {
-    private static ServerInfoRepository serverDao = new ServerInfoRepository();
 
     @Bean
-    ServerInfo defaultServerInfoImpl() {
-        return serverDao;
+    ServerInfoRepository defaultServerRepository() {
+        return new ServerInfoRepository();
     }
-
-    @Bean
-    ServerStatus defaultServerStatusDao() {
-        return serverDao;
-    }
-
-//    @Bean
-//    ServerInfoRepository defaultServerRepository() {
-//        return new ServerInfoRepository();
-//    }
-
-
 
     @Bean
     HelloDao defaultHelloDaoImpl() {
@@ -44,10 +29,5 @@ public class AppConfiguration {
     @Bean
     MessageSizeEstimator httpMessageEstimator() {
         return new DefaultMessageSizeEstimator(0);
-    }
-
-    @Bean
-    ServerInfo defaultServerInfo() {
-        return new ServerInfoRepository();
     }
 }

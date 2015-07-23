@@ -1,4 +1,4 @@
-package com.hamstercoders.netty.dub.server.core.di;
+package com.hamstercoders.netty.dub.server.core.di.bean;
 
 import java.lang.annotation.*;
 

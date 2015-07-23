@@ -1,9 +1,6 @@
 package com.hamstercoders.netty.dub.server.core.di;
 
-import com.hamstercoders.netty.dub.server.core.di.bean.Bean;
-import com.hamstercoders.netty.dub.server.core.di.bean.BeanDefinition;
-import com.hamstercoders.netty.dub.server.core.di.bean.PrototypeBeanDefinition;
-import com.hamstercoders.netty.dub.server.core.di.bean.SingletonBeanDefinition;
+import com.hamstercoders.netty.dub.server.core.di.bean.*;
 import com.hamstercoders.netty.dub.server.core.di.exceptions.ComponentNotFoundException;
 import com.hamstercoders.netty.dub.server.core.di.exceptions.FailureBeanCreationException;
 import com.hamstercoders.netty.dub.server.core.di.exceptions.FailureBeanInjectionException;
@@ -14,7 +11,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.function.Consumer;
 
 import static com.hamstercoders.netty.dub.utils.ReflectionUtil.hasAnnotation;
 
@@ -95,7 +91,6 @@ public class DependencyInjectionCore implements ComponentSource {
                     }
                 }
                 preparedComponents.put(c.getName(), new SingletonBeanDefinition(c, object));
-                //beans.put(c.getName(), new SingletonBeanDefinition(c, object));
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
@@ -105,9 +100,8 @@ public class DependencyInjectionCore implements ComponentSource {
     private BeanDefinition findBeenByClass(Class<?> clazz) {
         BeanDefinition definitionToReturn = beans.get(clazz.getName());
         if (definitionToReturn != null) {
-            return definitionToReturn;
+            return definitionToReturn;          //TODO Resolve more than one bean to inject in this case
         } else {
-            System.out.println(beans);
             for (BeanDefinition definition : beans.values()) {
                 if (Arrays.asList(definition.getClazz().getInterfaces()).contains(clazz)) {
                     if (definitionToReturn == null) {

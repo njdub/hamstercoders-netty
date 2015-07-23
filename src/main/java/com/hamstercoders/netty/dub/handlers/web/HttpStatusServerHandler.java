@@ -2,7 +2,7 @@ package com.hamstercoders.netty.dub.handlers.web;
 
 import com.hamstercoders.netty.dub.dao.ServerStatus;
 import com.hamstercoders.netty.dub.entities.RequestInfo;
-import com.hamstercoders.netty.dub.server.core.HttpHandler;
+import com.hamstercoders.netty.dub.server.core.di.HttpHandler;
 import com.hamstercoders.netty.dub.server.core.di.Inject;
 import com.hamstercoders.netty.dub.server.core.SimpleHttpChannelServerHandler;
 import io.netty.buffer.Unpooled;
@@ -39,7 +39,6 @@ public class HttpStatusServerHandler implements SimpleHttpChannelServerHandler {
     @Override
     public void channelRead(ChannelHandlerContext ctx, HttpRequest req) throws Exception {
         StringBuilder res = new StringBuilder("<body><h1  align=\"center\">STATUS</h1>");
-
         res.append("<p  align=\"center\" >Active connections: ").append(status.getActiveConnectionCount()).append("</p>");
         res.append("<p  align=\"center\" >Total request number: ").append(status.requestCount()).append("</p>");
         res.append("<p>Unique request per id:</p>");
@@ -87,7 +86,7 @@ public class HttpStatusServerHandler implements SimpleHttpChannelServerHandler {
         res.append("<hr/><br/>");
         res.append("<table border=\"1\" align=\"center\">");
         res.append("<caption>Last requests</caption>");
-        res.append("<tr><th>IP</th><th>URL</th><th>Date</th><th>Sent bytes</th><th>Received bytes</th><th>Speed</th></tr>");
+        res.append("<tr><th>IP</th><th>URL</th><th>Date</th><th>Sent bytes</th><th>Received bytes</th><th>Speed (bytes/sec)</th></tr>");
         for (RequestInfo r : lastRequest) {
             res.append("<tr>");
 
@@ -97,8 +96,8 @@ public class HttpStatusServerHandler implements SimpleHttpChannelServerHandler {
             res.append("<td>").append(r.getSentBytes()).append("</td>");
             res.append("<td>").append(r.getReceivedBytes()).append("</td>");
             long bytes = r.getReceivedBytes() + r.getSentBytes();
-            long time = (r.getEndTime() - r.getStartTime() != 0 ? r.getEndTime() - r.getStartTime() : 1000000);
-            double speed = ((double) bytes / (double) (time / 1000000));
+            long time = (r.getEndTime() - r.getStartTime() != 0 ? r.getEndTime() - r.getStartTime() : 1000000000);
+            double speed = ((double) bytes / (double) (time / 1000000000));
             if (speed == Double.POSITIVE_INFINITY || speed == Double.NEGATIVE_INFINITY) {
                 speed = bytes;
             }

@@ -1,13 +1,7 @@
 package com.hamstercoders.netty.dub.utils;
 
-import com.hamstercoders.netty.dub.server.core.HttpHandler;
-import com.hamstercoders.netty.dub.server.core.di.Component;
-
 import java.io.File;
 import java.lang.annotation.Annotation;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Target;
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;

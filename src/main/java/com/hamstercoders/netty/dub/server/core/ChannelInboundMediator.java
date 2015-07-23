@@ -33,37 +33,10 @@ public class ChannelInboundMediator extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        //System.out.println(":::::::::::::::::::::::::::::::::::::");
-//        SocketAddress address = ctx.channel().remoteAddress();
-//        InetSocketAddress inetSocketAddress = (InetSocketAddress) address;
-//        System.out.println(inetSocketAddress.getHostName());
-//        System.out.println(inetSocketAddress.getHostString());
-//        System.out.println(inetSocketAddress.getPort());
-//        System.out.println(inetSocketAddress.toString());
-
-//        EmbeddedChannel ch = new EmbeddedChannel(new HttpRequestEncoder());
-//        ch.writeOutbound(msg);
-//        ByteBuf encoded = (ByteBuf) ch.readOutbound();
-//        ch.close();
-//
-//        DefaultMessageSizeEstimator estimator = new DefaultMessageSizeEstimator(0);
-//        System.out.println(estimator.newHandle().size(encoded));
-
-        //LengthFieldBasedFrameDecoder decoder = new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE,)
-
-//        System.out.println(ctx.channel().toString());
-//        System.out.println(ctx.name());
-//        System.out.println(ctx.hashCode());
-//        System.out.println(ctx.newPromise());
-//        ctx.channel().attr(AttributeKey.valueOf("ate")).set("Nazar");
-//        System.out.println(":::::::::::::::::::::::::::::::::::::");
-
-
         if (msg instanceof HttpRequest) {
             HttpRequest request = (HttpRequest) msg;
             QueryStringDecoder query = new QueryStringDecoder(request.getUri());
             SimpleHttpChannelServerHandler handler = handlers.get(query.path());
-            //System.out.println(query.path());
             if (handler == null) {
                 handler = handlers.get("/NOT_FOUND");
                 super.channelRead(ctx, request);
@@ -86,15 +59,5 @@ public class ChannelInboundMediator extends ChannelInboundHandlerAdapter {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         cause.printStackTrace();
         ctx.close();
-    }
-
-    @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        super.channelActive(ctx);
-    }
-
-    @Override
-    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        super.channelInactive(ctx);
     }
 }

@@ -1,5 +1,6 @@
 package com.hamstercoders.netty.dub.handlers;
 
+import com.hamstercoders.netty.dub.server.AppConfiguration;
 import com.hamstercoders.netty.dub.server.core.di.Component;
 import com.hamstercoders.netty.dub.dao.ServerInfo;
 import com.hamstercoders.netty.dub.server.core.di.Inject;

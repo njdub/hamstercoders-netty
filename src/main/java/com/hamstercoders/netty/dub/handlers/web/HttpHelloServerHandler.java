@@ -1,7 +1,7 @@
 package com.hamstercoders.netty.dub.handlers.web;
 
 import com.hamstercoders.netty.dub.dao.HelloDao;
-import com.hamstercoders.netty.dub.server.core.HttpHandler;
+import com.hamstercoders.netty.dub.server.core.di.HttpHandler;
 import com.hamstercoders.netty.dub.server.core.SimpleHttpChannelServerHandler;
 import com.hamstercoders.netty.dub.server.core.di.Inject;
 import io.netty.buffer.Unpooled;

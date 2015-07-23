@@ -1,8 +1,7 @@
 package com.hamstercoders.netty.dub.handlers.web;
 
-import com.hamstercoders.netty.dub.server.core.HttpHandler;
+import com.hamstercoders.netty.dub.server.core.di.HttpHandler;
 import com.hamstercoders.netty.dub.server.core.SimpleHttpChannelServerHandler;
-import com.hamstercoders.netty.dub.server.core.di.Component;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.*;

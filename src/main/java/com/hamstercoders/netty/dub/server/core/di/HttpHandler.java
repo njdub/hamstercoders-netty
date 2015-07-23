@@ -1,4 +1,4 @@
-package com.hamstercoders.netty.dub.server.core;
+package com.hamstercoders.netty.dub.server.core.di;
 
 import com.hamstercoders.netty.dub.server.core.di.Component;
 
