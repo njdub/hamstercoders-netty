@@ -1,7 +1,8 @@
-package com.hamstercoders.netty.dub.handlers;
+package com.hamstercoders.netty.dub.handlers.web;
 
 import com.hamstercoders.netty.dub.server.core.HttpHandler;
 import com.hamstercoders.netty.dub.server.core.SimpleHttpChannelServerHandler;
+import com.hamstercoders.netty.dub.server.core.di.Component;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.*;
@@ -24,14 +25,16 @@ public class HttpRedirectServerHandler implements SimpleHttpChannelServerHandler
     @Override
     public void channelRead(ChannelHandlerContext ctx, HttpRequest req) throws Exception {
 
-        System.out.println("::::::::::::::::::::::::::::::::::::::::");
-        System.out.println(req.getMethod().toString());
-        System.out.println(req.getUri());
+//        System.out.println("::::::::::::::::::::::::::::::::::::::::");
+//        System.out.println(req.getMethod().toString());
+//        System.out.println(req.getUri());
+
         QueryStringDecoder query = new QueryStringDecoder(req.getUri());
-        System.out.println(query.path());
-        System.out.println(query.parameters().get("url"));
-        System.out.println(req.getProtocolVersion());
-        System.out.println(HttpHeaders.getHost(req, "none1"));
+
+//        System.out.println(query.path());
+//        System.out.println(query.parameters().get("url"));
+//        System.out.println(req.getProtocolVersion());
+//        System.out.println(HttpHeaders.getHost(req, "none1"));
 
 
         if (HttpHeaders.is100ContinueExpected(req)) {

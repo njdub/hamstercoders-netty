@@ -1,38 +1,38 @@
 package com.hamstercoders.netty.dub.server;
 
-import com.hamstercoders.netty.dub.handlers.*;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.http.HttpRequestDecoder;
-import io.netty.handler.codec.http.HttpResponseEncoder;
-import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created on 19-Jul-15.
  *
  * @author Nazar Dub
  */
-public class Server {
+public class DefaultServer implements NettyServer {
     public static final int DEFAULT_PORT = 9090;
 
     private int port;
 
-    public Server(int port) {
+    private ChannelHandler channelInitializer;
+
+    public DefaultServer(int port) {
         this.port = port;
     }
 
+    public DefaultServer(int port, ChannelHandler channelInitializer) {
+        this(port);
+        this.channelInitializer = channelInitializer;
+    }
+
+    @Override
     public void run() throws Exception {
+        Objects.requireNonNull(this.channelInitializer, "Channel initializer can't be null");
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 
@@ -41,7 +41,7 @@ public class Server {
             b.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .handler(new LoggingHandler(LogLevel.INFO))
-                    .childHandler(new ServerChannelInitializer())
+                    .childHandler(this.channelInitializer)
                     .option(ChannelOption.SO_BACKLOG, 1024)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
 
@@ -54,4 +54,11 @@ public class Server {
         }
     }
 
+    public ChannelHandler getChannelInitializer() {
+        return channelInitializer;
+    }
+
+    public void setChannelInitializer(ChannelHandler channelInitializer) {
+        this.channelInitializer = channelInitializer;
+    }
 }

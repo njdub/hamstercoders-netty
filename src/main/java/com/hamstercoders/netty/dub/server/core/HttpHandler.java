@@ -1,5 +1,7 @@
 package com.hamstercoders.netty.dub.server.core;
 
+import com.hamstercoders.netty.dub.server.core.di.Component;
+
 import java.lang.annotation.*;
 
 /**
@@ -10,6 +12,7 @@ import java.lang.annotation.*;
 @Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
+@Component
 public @interface HttpHandler {
     String value();
 }

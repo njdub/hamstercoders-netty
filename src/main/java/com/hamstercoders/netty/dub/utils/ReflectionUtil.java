@@ -1,8 +1,16 @@
 package com.hamstercoders.netty.dub.utils;
 
+import com.hamstercoders.netty.dub.server.core.HttpHandler;
+import com.hamstercoders.netty.dub.server.core.di.Component;
+
 import java.io.File;
+import java.lang.annotation.Annotation;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Target;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -10,7 +18,7 @@ import java.util.List;
  *
  * @author Nazar Dub
  */
-public class ClassFinderUtil {
+public class ReflectionUtil {
 
     private static final char DOT = '.';
     private static final char SLASH = '/';
@@ -42,6 +50,7 @@ public class ClassFinderUtil {
     /**
      * @param scannedPackage root package for scanning, don't user project root package
      * @param filter         class filter, if <code>filter</code> is <code>null</code> method will use default filter
+     *                       {@link ReflectionUtil.ClassFinderFilter}
      * @return all the classes  in <code>scannedPackage</code>  for which the filter is returned <code>true</code>
      */
     public static List<Class<?>> find(String scannedPackage, ClassFinderFilter filter) {
@@ -64,6 +73,29 @@ public class ClassFinderUtil {
         return find(scannedPackage, DEFAULT_CLASS_FILTER);
     }
 
+
+    /**
+     * @return if annotation present on the class or in the class annotations  return <code>true</code>, else return
+     * <code>false</code>
+     */
+    public static boolean hasAnnotation(Class<?> clazz, Class<? extends Annotation> annotation) {
+        if (clazz.isAnnotationPresent(annotation)) {
+            return true;
+        } else {
+            List<Annotation> classAnnotations = Arrays.asList(clazz.getAnnotations());
+            for (Annotation a : classAnnotations) {
+                if (a.annotationType().isAnnotationPresent(annotation)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+    public static void main(String[] args) {
+        System.out.println(hasAnnotation(ReflectionUtil.class, Component.class));
+    }
 
     private static File[] filesIn(File directory) {
         File[] files = directory.listFiles();
